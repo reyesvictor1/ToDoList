@@ -19,7 +19,8 @@ app.post("/todos", async (request, response) => {
         const { description } = request.body; // deconstruct request.body
         const newTodo = await pool.query(
             "INSERT INTO todo (description) VALUES($1) RETURNING *",
-            [description]);
+            [description]
+        );
         response.json(newTodo.rows[0]);
     } catch (err) {
         console.error(err.message)
@@ -43,16 +44,45 @@ app.get("/todos/:id", async (request, response) => { // :id allows URL to be dyn
         const { id } = request.params; // deconstruct request.params
         const todo = await pool.query(
             "SELECT * FROM todo WHERE todo_id=$1",
-            [id]);
-            response.json(todo.rows[0]);
+            [id]
+        );
+        response.json(todo.rows[0]);
     } catch (err) {
         console.error(err.message);
     }
 });
 
 // update a TODO
+app.put("/todos/:id", async (request, response) => {
+    try {
+        console.log(request.params); // requested id to be updated
+        console.log(request.body); // data body received by the client
+        const { id } = request.params;
+        const { description } = request.body;
+        const updatedTodo = await pool.query(
+            "UPDATE todo SET description=$1 WHERE todo_id=$2 RETURNING *",
+            [description, id]
+        );
+        response.json(updatedTodo.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // delete a TODO
+app.delete("/todos/:id", async (request, response) => {
+    try {
+        console.log(request.params); //requested id to be deleted
+        const { id } = request.params;
+        const deletedTodo = await pool.query(
+            "DELETE FROM todo WHERE todo_id=$1 RETURNING *",
+            [id]
+        );
+        response.json(deletedTodo.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 // =================================================
 
