@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import EditTodo from "./EditTodo";
 
 const ListTodos = () => {
 
@@ -13,7 +14,19 @@ const ListTodos = () => {
         } catch (err) {
             console.error(err.message);
         }
-        
+    };
+
+    const deleteTodo = async (todoId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/todos/${todoId}`, {
+                method: "DELETE"
+            });
+            console.log(response); // see response in browser's console
+            // window.location = "/"; // refresh the webpage
+            setTodos(todos.filter((todo) => todo.todo_id !== todoId)); // better approach, instead of refreshing the webpage every time
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     useEffect(() => {
@@ -36,6 +49,21 @@ const ListTodos = () => {
                         <td>Doe</td>
                         <td>john@example.com</td>
                     </tr> */}
+                    {todos.map((todo) => (
+                        <tr key={todo.todo_id}>
+                            <td>{todo.description}</td>
+                            <td>
+                                <EditTodo todo={todo} />
+                            </td>
+                            <td>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => deleteTodo(todo.todo_id)}>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </Fragment>
