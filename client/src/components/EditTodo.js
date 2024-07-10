@@ -31,13 +31,24 @@ const EditTodo = ({ todo }) => {
                 Edit
             </button>
 
-            <div class="modal" id={`id${todo.todo_id}`}>
+            <div
+                class="modal"
+                id={`id${todo.todo_id}`}
+                onClick={() => setDescription(todo.description)} // reset description
+            >
                 <div class="modal-dialog">
                     <div class="modal-content">
 
                         <div class="modal-header">
                             <h4 class="modal-title">Edit Todo</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                onClick={() => setDescription(todo.description)} // reset description
+                            >
+                                &times;
+                            </button>
                         </div>
 
                         <div class="modal-body">
@@ -58,7 +69,14 @@ const EditTodo = ({ todo }) => {
                             >
                                 Edit
                             </button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                data-dismiss="modal"
+                                onClick={() => setDescription(todo.description)} // reset description
+                            >
+                                Close
+                            </button>
                         </div>
 
                     </div>
